@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+    <title>게시판</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            margin: 0;
+            font-family: 'Poor Story', cursive;
+            text-align: center;
+        }
+        .mylist
+        {
+            border: 0px solid black;
+            width: 100%;
+            height: 40px;
+            text-align: right;
+        }
+        .mylist li
+        {
+            display: inline;
+            font-size: 17px;
+            margin: 1%;
+            position: relative;
+            top: -7px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .mylist a
+        {
+            color: black;
+            text-decoration: none;
+        }
+        .mylist a:hover
+        {
+            color: crimson;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-family: 'Poor Story', cursive;
+        }
+
+        button:hover {
+            background-color: #0000008a;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>회원가입</h1>
+    <form action="/notice/join" method="post" name="myjoin">
+        <label for="userid">아이디</label>
+        <input type="text" id="userid" name="userid" placeholder="ID를 입력 해주세요">
+
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" name="password" placeholder="비밀번호를 입력해주세요">
+
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력해주세요">
+
+        <label for="email">휴대폰 번호</label>
+        <input type="text" id="phonenumber" name="phonenumber" placeholder="휴대폰번호를 입력해주세요">
+
+        <label for="email">이메일</label>
+        <input type="text" id="email" name="email" placeholder="이메일을 입력해주세요">
+
+        <button type="submit" onclick="Join()">가입하기</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script th:inline="javascript">
+        function Join()
+        {
+            if (document.myjoin.userid.value.length < 5)
+            {
+                alert("아이디를 5자리 이상 입력해주세요.");
+            }
+            else if (document.myjoin.password.value.length < 3)
+            {
+                alert("비밀번호를 3자리 이상 입력해주세요.");
+            }
+            else if (document.myjoin.name.value.length < 2)
+            {
+                alert("이름을 2글자 이상 입력해주세요.");
+            }
+            else if (document.myjoin.phonenumber.value.length < 5)
+            {
+                alert("휴대폰 번호를 5자리 이상 입력해주세요.");
+            }
+            else if (document.myjoin.email.value.length < 5)
+            {
+                alert("이메일을 5자리 이상 입력해주세요.");
+            }
+            else
+            {
+                var userid = $("#userid").val();
+                var password = $("#password").val();
+                var name = $("#name").val();
+                var phonenumber = $("#phonenumber").val();
+                var email = $("#email").val();
+
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "/notice/join",
+                    data:
+                    {
+                        userid: userid,
+                        password: password,
+                        name: name,
+                        phonenumber: phonenumber,
+                        email: email
+                    },
+                    success: function(response)
+                    {
+                        if (response === "회원가입 성공")
+                        {
+                            alert("회원가입에 성공했습니다!");
+                            // 로그인 성공 시 페이지 이동
+                            window.location.href = "/notice/main";
+                        }
+                        else
+                        {
+                            alert("이미 등록된 사용자 입니다.");
+                            window.location.href = "/notice/join";
+                        }
+                    },
+                    error: function()
+                    {
+                        alert("서버 오류가 발생했습니다.");
+                    }
+                });
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

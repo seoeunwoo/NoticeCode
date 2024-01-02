@@ -1,0 +1,449 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poor Story', cursive;
+}
+
+html
+{
+    font-size: 10.5px;
+}
+
+ul, li
+{
+    list-style: none;
+}
+
+a
+{
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 위는 전체 페이지 공통 css */
+
+/* 아래부터는 noticelist css */
+
+.board_wrap
+{
+    width: 1000px;
+    margin: 100px auto;
+}
+
+.board_title
+{
+    margin-bottom: 30px;
+}
+
+.board_title strong
+{
+    font-size: 3rem;
+    /* 최상위 값의 x3 이라는 의미 */
+}
+
+.board_title p
+{
+    margin-top: 5px;
+    font-size: 1.4rem;
+}
+
+.bt_wrap
+{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0;
+}
+
+.bt_wrap a
+{
+    display: inline-block;
+    min-width: 80px;
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: 1.4rem;
+}
+
+.bt_wrap a:first-child
+{
+    margin-left: 0;
+}
+
+.bt_wrap a.on
+{
+    background-color: #000;
+    color: #fff;
+}
+
+.bt_wrap button
+{
+    display: inline-block;
+    min-width: 80px;
+    padding: 10px;
+    margin-left: 10px;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.bt_wrap button:first-child
+{
+    margin-left: 0;
+}
+
+.bt_wrap button.on
+{
+    background-color: #000;
+    color: #fff;
+}
+
+.board_list
+{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_list > div
+{
+    /* board_list > div 에서 > 는 해당 클래스 안에 있는 div라는 뜻 */
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+}
+
+.board_list > div.top
+{
+    border-bottom: 1px solid #999;
+}
+
+.board_list > div:last-child
+{
+    border-bottom: 2px solid #000;
+}
+
+.board_list > div > div
+{
+    display: inline-block;
+    /* display: inline-block 는 가로로 정렬하는 것임 */
+    font-size: 1.4rem;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.board_list > div.top > div
+{
+    font-weight: 600;
+}
+
+.board_list .num
+{
+    width: 10%;
+}
+
+.board_list .title
+{
+    width: 60%;
+    text-align: left;
+}
+
+.board_list .top .title
+{
+    text-align: center;
+}
+
+.board_list .writer
+{
+    width: 10%;
+}
+
+.board_list .date
+{
+    width: 10%;
+}
+
+.board_list .count
+{
+    width: 10%;
+}
+
+.board_page
+{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0;
+    /* font-size: 0; 은 여백을 없애주기 위한 용도로 사용됨 */
+}
+
+.board_page a
+{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-left: 0;
+    vertical-align: middle;
+    line-height: 100%;
+    font-size: 1rem;
+}
+
+.board_page a.bt
+{
+    font-size: 1.2rem;
+    padding-top: 10px;
+    letter-spacing: -1px;
+}
+
+.board_page a.num
+{
+    font-size: 1.4rem;
+    padding-top: 9px;
+}
+
+.board_page a.num.on
+{
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+
+.board_page a:first-child
+{
+    border-left: 1px solid #ddd;
+}
+
+/* 여기서부터 noticeview css */
+
+.board_view
+{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_view .title
+{
+    padding: 20px 15px;
+    border-bottom: 1px dashed #ddd;
+    font-size: 2rem;
+}
+
+.board_view .info
+{
+    padding: 15px;
+    border-bottom: 1px solid #999;
+    font-size: 0;
+}
+
+.board_view .info dl
+{
+    display: inline-block;
+    padding: 0 20px;
+    position: relative;
+    /* 여기가 가상선택자의 부모부분 */
+}
+
+.board_view .info dl:first-child
+{
+    padding-left: 0;
+}
+
+.board_view .info dl::before
+{
+    content: "";
+    /* content는 css에서 라인이나 말머리 글머리 혹은 동그란모양 같은거 만들때 쓰기 때문에 빈칸으로 놔둠 이 속성이 없으면 아예 안생겨남 */
+    width: 1px;
+    height: 13px;
+    background: #ddd;
+    display: block;
+    position: absolute;
+    /* absolute는 relative의 기준으로 위치를 맞출때 사용한다 */
+    /* 현재 dl의 가상 선택자의 부모는 dl인셈이다 */
+    top: 1px;
+    left: 0;
+}
+
+.board_view .info dl:first-child::before
+{
+    display: none;
+    /* 첫번재에 있는 가상선택자는 안보이게 하는 코드 */
+}
+
+.board_view .info dl dt,
+.board_view .info dl dd
+{
+    display: inline-block;
+    font-size: 1.4rem;
+}
+
+.board_view .info dl dt
+{
+    display: inline-block;
+}
+
+.board_view .info dl dd
+{
+    margin-left: 10px;
+    color: #777;
+}
+
+.board_view .cont
+{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 1.4rem;
+}
+
+/* 여기서부터는 noticewrite.html css임 */
+
+.board_write
+{
+    border-top: 2px solid #000;
+}
+
+.board_write .title,
+.board_write .info
+{
+    padding: 15px;
+}
+
+.board_write .info
+{
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px solid #000;
+    font-size: 0;
+}
+
+.board_write .title dl
+{
+    font-size: 0;
+}
+
+.board_write .info dl
+{
+    display: inline-block;
+    width: 50%;
+    vertical-align: middle;
+}
+
+.board_write .title dt,
+.board_write .title dd,
+.board_write .info dt,
+.board_write .info dd
+{
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.4rem;
+}
+
+.board_write .title dt,
+.board_write .info dt
+{
+    width: 100px;
+}
+
+.board_write .title dd
+{
+    width: calc(100% - 100px);
+}
+
+.board_write .title input[type="text"]
+{
+    width: 80%;
+}
+
+.board_write .title input[type="text"],
+.board_write .info input[type="text"],
+.board_write .info input[type="password"]
+{
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.board_write .cont
+{
+    border-bottom: 1px solid #000;
+}
+
+.board_write .cont textarea
+{
+    display: block;
+    width: 100%;
+    height: 300px;
+    padding: 15px;
+    box-sizing: border-box;
+    border: 0;
+    resize: vertical;
+    text-align: left;
+}
+
+.mylist
+{
+    border: 0px solid black;
+    width: 100%;
+    height: 40px;
+    text-align: right;
+}
+.mylist li
+{
+    display: inline;
+    font-size: 17px;
+    margin: 1%;
+    position: relative;
+    top: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.mylist a
+{
+    color: black;
+    text-decoration: none;
+}
+.mylist a:hover
+{
+    color: crimson;
+}
+
+.mylist .user
+{
+    border: 0px solid black;
+    width: 300px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+.mylist .user p
+{
+    font-size: 20px;
+}
+
+.search
+{
+    border: 0px solid black;
+    width: 150px;
+    height: 30px;
+}
+
+.search input
+{
+    border: 1px solid black;
+    width: 150px;
+    height: 30px;
+    text-align: center;
+    position: relative;
+    top: -5px;
+}
+
+.searchbutton
+{
+    width: 50px;
+    height: 30px;
+    position: relative;
+    top: -36px;
+    left: 155px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
