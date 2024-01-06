@@ -63,6 +63,10 @@ public class MemoRepositoryImpl implements MemoRepository {
 
             if (resultSet.next())
             {
+                // 저장된 DB 내용에서 userid에 해당하는 데이터를 따로 가져옴
+                // 회원가입할 때 입력한 userid와 저장되어 있는 userid를 비교 후
+                // 일치하면 count값을 1로 설정
+                // count 값이 0보다 크면 회원가입을 막고 null을 반환
                 int count = resultSet.getInt(1);
                 if (count > 0)
                 {
@@ -74,8 +78,10 @@ public class MemoRepositoryImpl implements MemoRepository {
             String SaveSql = "insert into notice (id, userid, password, name, phonenumber, email) values (?, ?, ?, ?, ?, ?)";
 
             try (Connection connection1 = getConnection();
-                 PreparedStatement preparedStatement1 = connection1.prepareStatement(SaveSql)) {
-
+                 PreparedStatement preparedStatement1 = connection1.prepareStatement(SaveSql))
+            {
+                // DB에 저장된 userid가 중복되는게 없으면 회원가입시 입력한 데이터를 저장하고
+                // memo값을 반환
                 Long nextId = getNextId();
                 memo.setId(nextId);
 
@@ -221,6 +227,7 @@ public class MemoRepositoryImpl implements MemoRepository {
         // setString으로 찾고자 하는 값의 keyword 값을 입력한 뒤 resultSet으로 모든 데이터를 하나씩 검사한다
         // 검사 한 뒤 비어있는 memoList에 해당 값을 add 하고
         // 추가한 값을 다시 반환한다
+        // 쿼리문에서는 writername를 기준으로 데이터를 가져옴
         String findByWriterSql = "select * from notice where writername like ? or title like ?";
 
         List<Memo> memoList = new ArrayList<>();
@@ -230,6 +237,7 @@ public class MemoRepositoryImpl implements MemoRepository {
         {
             preparedStatement.setString(1, "%" + keyword + "%");
             preparedStatement.setString(2, "%" + keyword + "%");
+            // like 연산자의 패턴 매칭을 하기 위해 임의의 문자열로 %를 사용함
 
             try (ResultSet resultSet = preparedStatement.executeQuery())
             {
@@ -288,6 +296,11 @@ public class MemoRepositoryImpl implements MemoRepository {
                 return findid;
             }
         }
+
+        // List에 findAll() 메소드를 호출해서 DB에 저장된 모든 데이터를 검사 후
+        // 입력받은 userid와 password의 일치여부를 검사함
+        // 일치하면 key값을 findid에 저장해서 반환하고
+        // 일치하지 않으면 null 값을 반환함
 
         // db 연결 전 Map으로 key값 찾는 방식
         /*for(Map.Entry<Long, Memo> entry : data.entrySet())
@@ -468,6 +481,9 @@ public class MemoRepositoryImpl implements MemoRepository {
                     memo.setContents(null);
                     memo.setWriterpassword(null);
 
+                    // 게시글에 대한 삭제이기 때문에 해당 회원을 삭제 하지 않고 모든 데이터를 초기화 처리
+                    // view에서는 0보다 크거나 null이 아닐경우 데이터를 표시해서 삭제 된 게시글은 보이지 않게 처리
+
                     preparedStatement.setInt(1, 0);
                     preparedStatement.setString(2, null);
                     preparedStatement.setString(3, null);
@@ -521,6 +537,8 @@ public class MemoRepositoryImpl implements MemoRepository {
         System.out.println("게시판 총 사이즈 = " + allMemos.size());
         System.out.println();
         return allMemos.size();
+
+        // 페이징 처리를 위해 총 데이터 사이즈를 필요 시 사용하기 위해 만들어둠
     }
 
 
