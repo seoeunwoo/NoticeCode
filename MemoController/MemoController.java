@@ -48,7 +48,8 @@ public class MemoController {
     @ResponseBody
     public String NoticeJoinComplete(@ModelAttribute Memo memo) {
         Memo memo1 = memoService.save(memo);
-
+        // @ModelAttribute를 통해 따로 데이터형식을 지정 해주지 않아도 Memo 객체에 저장된 필드를 가져와서 데이터를 저장
+        // null 검사를 통해 ajax에 아래 메세지 전달 후 비동기처리
         if (memo1 == null)
         {
             return "회원가입 실패";
@@ -73,6 +74,9 @@ public class MemoController {
     public String NoticeLoginComplete(@RequestParam("userid") String userid, @RequestParam("password") String password) {
         loginnoticeid = memoService.login(userid, password);
         loginid = userid;
+        // 입력받은 userid와 password값을 login 메소드에 전달 후 null 검사
+        // null 검사 후 아래 메세지를 ajax에 전달 후 비동기처리
+        // 게시판을 이용하는 동안 로그인한 userid를 표시 하기 위해 loginid에 입력한 userid 값을 선언
         if (loginnoticeid != null)
         {
             return "로그인 성공";
@@ -123,6 +127,8 @@ public class MemoController {
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("alllist", currentPageSearchResult);
+
+            // 검색어가 있으면 DB에서 해당 검색어를 포함된 데이터를 전부 가져와서 5개가 넘어갈 경우 페이징 처리
         }
         else
         {
@@ -148,6 +154,8 @@ public class MemoController {
             model.addAttribute("alllist", currentPageList);
 
             System.out.println("불러온 pagelist = " + alllist);
+
+            // 검색어가 없으면 DB에 저장된 모든 데이터를 가져와서 출력하면서 페이징처리
         }
         //model.addAttribute("alllist", alllist);
 
@@ -162,6 +170,11 @@ public class MemoController {
         Memo memo = memoService.findById(noticeid);
         memoService.updateviewcount(noticeid);
         boolean checkid = loginnoticeid.equals(noticeid);
+
+        // memo 객체에 전달받은 id값을 이용해서 모든 memo객체에 접근
+        // 게시글 내용을 확인 하면 조회수가 증가하고
+        // 등록했던 id와 현재 접속한 id 값을 비교해서 동일하면 수정 삭제 버튼이 보이게 하고
+        // 동일하지 않으면 목록 버튼만 보이게함
         model.addAttribute("memo", memo);
         model.addAttribute("loginid", loginid);
         model.addAttribute("checkid", checkid);
@@ -217,6 +230,13 @@ public class MemoController {
         // 처음 등록할때 입력한 비번
         System.out.println("checksavepassword = " + checksavepassword);
         Memo memo = memoService.findById(noticeid);
+
+        // 글 수정 시 처음에 글 등록할때 저장된 비밀번호와 수정할때 입력한 비밀번호를
+        // checkwriterpassword 메소드를 통해 비교함
+        // 비밀번호가 일치 하지 않으면 view에 에러메세지 출력 후 다시 수정 화면으로 돌아와서
+        // 글 수정이 안되게 막음
+        // 처음에 등록한 비밀번호와 수정할때 입력한 비밀번호가 서로 일치 할 경우
+        // 게시글 수정 완료 메세지를 출력하면서 edit 메소드를 통해 입력한 데이터를 저장
 
         if (!checksavepassword.equals(writerpassword))
         {
